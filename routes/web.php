@@ -21,9 +21,7 @@ use Illuminate\Http\Request;
     */
 Route::get('/', function () {
     error_log("INFO: get /");
-    return view('tasks', [
-        'tasks' => Task::orderBy('created_at', 'asc')->get()
-    ]);
+    return view('welcome');
 });
 
 /**
@@ -58,3 +56,11 @@ Route::delete('/task/{id}', function ($id) {
 
     return redirect('/');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
