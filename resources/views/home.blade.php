@@ -15,6 +15,11 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+
+                    @foreach($cats as $cat)
+                            <h1>{{$cat->name}}</h1>
+                    @endforeach
+
                 </div>
             </div>
         </div>
