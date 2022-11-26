@@ -15,6 +15,43 @@
                     @endif
                 </div>
 
+                <form method="POST" action="{{ route('search-all') }}" class="m-lg-4">
+                    @csrf
+                    <input type="text" class="form-control form-input" name="search" placeholder="Search anything...">
+                </form>
+
+
+                <div class="panel-body">
+                    <table class="table table-striped task-table">
+                        <thead>
+                        <td>Name</td>
+                        <td>Owner</td>
+                        <td>Registration Date</td>
+                        <td>Expiration Date</td>
+                        </thead>
+                        <tbody>
+                        @foreach ($trademarks as $trademark)
+                            <tr class="">
+                                <td class="table-text">
+                                    <div>{{ $trademark->trademark_name }}</div>
+                                </td>
+
+                                <td>
+                                    <div>{{$trademark->user->name}}</div>
+                                </td>
+
+                                <td>
+                                    <p class="">{{$trademark->registration}}</p>
+                                </td>
+
+                                <td>
+                                    <p class="">{{$trademark->expiration}}</p>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
             </div>
         </div>

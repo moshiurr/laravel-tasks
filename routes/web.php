@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Trademark;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,9 @@ Route::get('/', function () {
     error_log("INFO: get /");
     return view('welcome');
 });
+
+
+Auth::routes();
 
 /**
     * Add New Task
@@ -50,13 +54,11 @@ Route::post('/task', function (Request $request) {
 /**
     * Delete Task
     */
-Route::delete('/task/{id}', function ($id) {
-    error_log('INFO: delete /task/'.$id);
-    Task::findOrFail($id)->delete();
+Route::delete('/trademarks/{id}', [App\Http\Controllers\HomeController::class, 'delete']);
 
-    return redirect('/');
-});
+Route::post('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('search-yours');
+Route::post('/search-all', [App\Http\Controllers\HomeController::class, 'searchAll'])->name('search-all');
 
-Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/viewYourTrademark', [App\Http\Controllers\HomeController::class, 'viewYourTrademark'])->name('view-your-trademark');
 
