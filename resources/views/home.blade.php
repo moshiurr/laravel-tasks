@@ -13,6 +13,12 @@
                             {{ session('status') }}
                         </div>
                     @endif
+
+                        @if (session('removed'))
+                            <div class="alert alert-danger" role="alert">
+                                {{ session('removed') }}
+                            </div>
+                        @endif
                 </div>
 
                 <div class="m-auto">
@@ -55,14 +61,28 @@
                                 </td>
 
                                 <td>
-                                    <form action="{{'/trademarks/' . $trademark->id }}" method="POST">
-                                        {{ csrf_field() }}
-                                        {{ method_field('PUT') }}
 
-                                        <button type="submit" class="btn btn-secondary">
-                                            <i class="fa fa-btn fa-trash"></i>Favorite
-                                        </button>
-                                    </form>
+                                    @if(in_array($trademark->id, $favTrades))
+                                        <form action="{{'/delete-favorite/' . $trademark->id }}" method="POST">
+                                            {{ csrf_field() }}
+                                            {{ method_field('DELETE') }}
+
+                                            <button type="submit" class="btn btn-outline-secondary">
+                                                <i class="fa fa-btn fa-trash"></i>Remove Favorite
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form action="{{'/add-favorite/' . $trademark->id }}" method="POST">
+                                            {{ csrf_field() }}
+                                            {{ method_field('PUT') }}
+
+                                            <button type="submit" class="btn btn-secondary">
+                                                <i class="fa fa-btn fa-trash"></i>Favorite
+                                            </button>
+                                        </form>
+                                    @endif
+
+
                                 </td>
 
                             </tr>
@@ -70,7 +90,6 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>

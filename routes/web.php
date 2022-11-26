@@ -55,6 +55,8 @@ Route::post('/task', function (Request $request) {
     * Delete Task
     */
 Route::delete('/trademarks/{id}', [App\Http\Controllers\HomeController::class, 'delete']);
+Route::delete('/delete-favorite/{id}', [App\Http\Controllers\HomeController::class, 'deleteFavorite']);
+Route::put('/add-favorite/{id}', [\App\Http\Controllers\HomeController::class, 'addFavorite']);
 
 Route::post('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('search-yours');
 Route::post('/search-all', [App\Http\Controllers\HomeController::class, 'searchAll'])->name('search-all');
