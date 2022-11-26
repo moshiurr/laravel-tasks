@@ -79,5 +79,10 @@
             @yield('content')
         </main>
     </div>
+
+    <!-- Footer-->
+    <footer class="py-5 bg-dark">
+        <div class="container px-5"><p class="m-0 text-center text-white">Copyright &copy; Moshiur Rahman : 2022</p></div>
+    </footer>
 </body>
 </html>
