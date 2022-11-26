@@ -60,5 +60,8 @@ Route::post('/search', [App\Http\Controllers\HomeController::class, 'search'])->
 Route::post('/search-all', [App\Http\Controllers\HomeController::class, 'searchAll'])->name('search-all');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/register-trade', [App\Http\Controllers\HomeController::class, 'getRegisterTrade'])->name('register-trade');
+Route::post('/register-trade', [App\Http\Controllers\HomeController::class, 'registerTrade'])->name('register-trade');
 Route::get('/viewYourTrademark', [App\Http\Controllers\HomeController::class, 'viewYourTrademark'])->name('view-your-trademark');
+Route::get('/viewFavTrademark', [App\Http\Controllers\HomeController::class, 'viewFavTrademark'])->name('view-fav-trademark');
 

@@ -15,6 +15,12 @@
                     @endif
                 </div>
 
+                <div class="m-auto">
+                    <a href="{{route('register-trade')}}"><button type="button" class="btn btn-success btn-lg">Register New Trademarks</button></a>
+                    <a href="{{route('view-your-trademark')}}"><button type="button" class="btn btn-primary btn-lg">View Your Trademarks</button></a>
+                    <a href="{{route('view-fav-trademark')}}"><button type="button" class="btn btn-secondary btn-lg">View Favorite Trademarks</button></a>
+                </div>
+
                 <form method="POST" action="{{ route('search-all') }}" class="m-lg-4">
                     @csrf
                     <input type="text" class="form-control form-input" name="search" placeholder="Search anything...">
@@ -47,6 +53,18 @@
                                 <td>
                                     <p class="">{{$trademark->expiration}}</p>
                                 </td>
+
+                                <td>
+                                    <form action="{{'/trademarks/' . $trademark->id }}" method="POST">
+                                        {{ csrf_field() }}
+                                        {{ method_field('PUT') }}
+
+                                        <button type="submit" class="btn btn-secondary">
+                                            <i class="fa fa-btn fa-trash"></i>Favorite
+                                        </button>
+                                    </form>
+                                </td>
+
                             </tr>
                         @endforeach
                         </tbody>

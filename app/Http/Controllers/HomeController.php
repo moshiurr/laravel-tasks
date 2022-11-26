@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegisterTradeRequest;
 use App\Models\Trademark;
 use App\Models\TrademarkCategories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Session;
 
 class HomeController extends Controller
 {
@@ -39,10 +41,39 @@ class HomeController extends Controller
      */
     public function viewYourTrademark()
     {
-
         $trades = Trademark::where('owner_id', Auth::id())->paginate(10);
 
         return view('viewYourTrademark')->with('trademarks',$trades);
+    }
+
+    public function viewFavTrademark()
+    {
+        $trades = Trademark::where('owner_id', Auth::id())->paginate(10);
+
+        return view('viewFavTrademark')->with('trademarks',$trades);
+    }
+
+    public function getRegisterTrade()
+    {
+        $categories = TrademarkCategories::all();
+
+        return view('registerTrade')->with('categories',$categories);
+    }
+
+    public function registerTrade(RegisterTradeRequest $request)
+    {
+        $isExist = Trademark::where('owner_id', Auth::id())->first();
+
+        if($isExist){
+            $request->session()->flash('failed', 'You have already registered.');
+            return redirect('/register-trade');
+        }
+
+        Trademark::create($request->validated());
+        $request->session()->flash('status', 'Trademark registered successfully!');
+        return redirect('/home');
+
+
     }
 
     public function delete($id, Request $request)
@@ -67,4 +98,5 @@ class HomeController extends Controller
 
         return view('home')->with('trademarks',$trades);
     }
+
 }
