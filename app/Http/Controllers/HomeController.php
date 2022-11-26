@@ -50,9 +50,9 @@ class HomeController extends Controller
 
     public function viewFavTrademark()
     {
-        $trades = Trademark::where('owner_id', Auth::id())->paginate(10);
+        $trades = FavoriteTrademark::where('owner_id', Auth::id())->paginate(10);
 
-        return view('viewFavTrademark')->with('trademarks',$trades);
+        return view('viewFavTrademark')->with('favTrademarks',$trades);
     }
 
     public function getRegisterTrade()
@@ -104,6 +104,8 @@ class HomeController extends Controller
         FavoriteTrademark::where('trademark_id', $id)->first()->delete();
 
         $request->session()->flash('removed', 'Trademark removed from your favourite list successfully!');
+
+        if(isset($request['type']) && $request['type'] == 'fav') return redirect('/viewFavTrademark');
         return redirect('/home');
     }
 
