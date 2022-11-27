@@ -33,6 +33,12 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
+                        @guest()
+                        @else
+                            <li>
+                                <a href="{{route('home')}}" class="nav-link">{{__('Home')}}</a>
+                            </li>
+                        @endguest
 
                     </ul>
 
