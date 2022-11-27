@@ -35,16 +35,16 @@
                                 </div>
                             </div>
 
-                            <div>
-                                <div><label for="category_id" class="col-md-4 col-form-label text-md-end">{{ __('Category') }}</label></div>
+                            <div class="row mb-3">
+                                <label for="category_id" class="col-md-4 col-form-label text-md-end">{{ __('Category')}}</label>
 
-                                <div class="mb-3">
+                                <span class="">
                                     <select name="category_id" id="category_id" class="form-control">
                                         @foreach ($categories as $category)
                                             <option value="{{ $category['id'] }}" >{{ $category['name'] }}</option>
                                         @endforeach
                                     </select>
-                                </div>
+                                </span>
                             </div>
 
                             <div class="row mb-3">

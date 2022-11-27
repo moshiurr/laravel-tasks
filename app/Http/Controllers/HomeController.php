@@ -6,6 +6,7 @@ use App\Http\Requests\RegisterTradeRequest;
 use App\Models\FavoriteTrademark;
 use App\Models\Trademark;
 use App\Models\TrademarkCategories;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Session;
@@ -41,12 +42,22 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function viewYourTrademark()
+    public function viewTrademark()
     {
-        $trades = Trademark::where('owner_id', Auth::id())->paginate(10);
+        $trade = Trademark::where('owner_id', Auth::id())->first();
 
-        return view('viewYourTrademark')->with('trademarks',$trades);
+        return view('viewTrademark')->with('trademark',$trade);
     }
+
+    public function viewOtherTrademark($id, Request $request)
+    {
+        $trade = Trademark::findOrFail($id);
+        $favTrades = FavoriteTrademark::select('trademark_id')->where('owner_id',Auth::id())->get()->pluck('trademark_id')->toArray();
+
+        return view('viewTrademark')->with('trademark',$trade)->with('favTrades',$favTrades);
+    }
+
+
 
     public function viewFavTrademark()
     {
@@ -71,6 +82,16 @@ class HomeController extends Controller
             return redirect('/register-trade');
         }
 
+        $isCreatedByOther = Trademark::where('trademark_name',$request['trademark_name'])
+                            ->where('category_id',$request['category_id'])
+                            ->where('expiration','>',Carbon::now())
+                            ->first();
+
+        if($isCreatedByOther){
+            $request->session()->flash('failed', 'A trademark is already registered for this name and category, and is not expired.');
+            return redirect('/register-trade');
+        }
+
         Trademark::create($request->validated());
         $request->session()->flash('status', 'Trademark registered successfully!');
         return redirect('/home');
@@ -84,7 +105,7 @@ class HomeController extends Controller
         Trademark::findOrFail($id)->delete();
 
         $request->session()->flash('status', 'Trademark deleted successfully!');
-        return redirect('/viewYourTrademark');
+        return redirect('/viewTrademark');
     }
 
     public function addFavorite($id, Request $request)
@@ -95,6 +116,8 @@ class HomeController extends Controller
         ]);
 
         $request->session()->flash('status', 'Trademark added to your favourite list successfully!');
+
+        if(isset($request['type']) && $request['type'] == 'view') return redirect('/view-trademark/'.$id);
         return redirect('/home');
 
     }
@@ -106,6 +129,7 @@ class HomeController extends Controller
         $request->session()->flash('removed', 'Trademark removed from your favourite list successfully!');
 
         if(isset($request['type']) && $request['type'] == 'fav') return redirect('/viewFavTrademark');
+        else if(isset($request['type']) && $request['type'] == 'view') return redirect('/view-trademark/'.$id);
         return redirect('/home');
     }
 
@@ -113,14 +137,17 @@ class HomeController extends Controller
     {
         $trades = Trademark::where('owner_id', Auth::id())->where('trademark_name','Like', '%'.$request['search'].'%')->paginate(10);
 
-        return view('viewYourTrademark')->with('trademarks',$trades);
+        $favTrades = FavoriteTrademark::select('trademark_id')->where('owner_id',Auth::id())->get()->pluck('trademark_id')->toArray();
+
+        return view('viewTrademark')->with('trademarks',$trades)->with('favTrades',$favTrades);
     }
 
     public function searchAll(Request $request)
     {
         $trades = Trademark::where('trademark_name','Like', '%'.$request['search'].'%')->paginate(10);
+        $favTrades = FavoriteTrademark::select('trademark_id')->where('owner_id',Auth::id())->get()->pluck('trademark_id')->toArray();
 
-        return view('home')->with('trademarks',$trades);
+        return view('home')->with('trademarks',$trades)->with('favTrades',$favTrades);
     }
 
 }

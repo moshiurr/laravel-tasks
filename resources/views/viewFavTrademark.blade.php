@@ -34,6 +34,7 @@
                             <thead>
                             <td>Name</td>
                             <td>Owner</td>
+                            <td>Category</td>
                             <td>Registration Date</td>
                             <td>Expiration Date</td>
                             </thead>
@@ -46,6 +47,10 @@
 
                                     <td>
                                         <div>{{$favTrademark->user->name}}</div>
+                                    </td>
+
+                                    <td>
+                                        <div>{{$favTrademark->trademark->category->name}}</div>
                                     </td>
 
                                     <td>
@@ -75,6 +80,9 @@
                             @endforeach
                             </tbody>
                         </table>
+                        @if(count($favTrademarks) < 1)
+                            <div class="h4 text-lg-center">There are no trademarks to show</div>
+                        @endif
                     </div>
                 </div>
             </div>

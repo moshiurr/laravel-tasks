@@ -23,4 +23,6 @@ class FavoriteTrademark extends Model
     {
         return $this->belongsTo(Trademark::class, 'trademark_id', 'id');
     }
+
+
 }

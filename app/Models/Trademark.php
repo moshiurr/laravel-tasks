@@ -26,4 +26,9 @@ class Trademark extends Model
     {
         return $this->belongsTo(User::class, 'owner_id', 'id');
     }
+
+    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(TrademarkCategories::class, 'category_id', 'id');
+    }
 }

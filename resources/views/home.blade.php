@@ -14,16 +14,16 @@
                         </div>
                     @endif
 
-                        @if (session('removed'))
-                            <div class="alert alert-danger" role="alert">
-                                {{ session('removed') }}
-                            </div>
-                        @endif
+                    @if (session('removed'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ session('removed') }}
+                        </div>
+                    @endif
                 </div>
 
                 <div class="m-auto">
                     <a href="{{route('register-trade')}}"><button type="button" class="btn btn-success btn-lg">Register New Trademarks</button></a>
-                    <a href="{{route('view-your-trademark')}}"><button type="button" class="btn btn-primary btn-lg">View Your Trademarks</button></a>
+                    <a href="{{route('view-trademark')}}"><button type="button" class="btn btn-primary btn-lg">View Your Trademark</button></a>
                     <a href="{{route('view-fav-trademark')}}"><button type="button" class="btn btn-secondary btn-lg">View Favorite Trademarks</button></a>
                 </div>
 
@@ -38,6 +38,7 @@
                         <thead>
                         <td>Name</td>
                         <td>Owner</td>
+                        <td>Category</td>
                         <td>Registration Date</td>
                         <td>Expiration Date</td>
                         </thead>
@@ -45,11 +46,14 @@
                         @foreach ($trademarks as $trademark)
                             <tr class="">
                                 <td class="table-text">
-                                    <div>{{ $trademark->trademark_name }}</div>
+                                    <div><a href="{{'/view-trademark/'.$trademark->id}}">{{ $trademark->trademark_name }}</a></div>
                                 </td>
 
                                 <td>
                                     <div>{{$trademark->user->name}}</div>
+                                </td>
+                                <td>
+                                    <div>{{$trademark->category->name}}</div>
                                 </td>
 
                                 <td>
@@ -67,7 +71,7 @@
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}
 
-                                            <button type="submit" class="btn btn-outline-secondary">
+                                            <button type="submit" class="btn btn-outline-secondary" >
                                                 <i class="fa fa-btn fa-trash"></i>Remove Favorite
                                             </button>
                                         </form>
@@ -89,6 +93,9 @@
                         @endforeach
                         </tbody>
                     </table>
+                    @if(count($trademarks) < 1)
+                        <div class="h4 text-lg-center">There are no trademarks to show</div>
+                    @endif
                 </div>
             </div>
         </div>
